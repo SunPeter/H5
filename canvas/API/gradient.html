@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="800" height="600"></canvas>
+</body>
+<script>
+
+    var color=["#F00","#0F0","#00F"];
+    window.onload=function(){
+        var canvas=document.getElementById("canvas"),
+        width=canvas.width,
+        height=canvas.height,
+        context=canvas.getContext("2d");
+
+
+
+        context.beginPath();
+        context.moveTo(100,100);
+
+        var mygradient=addLinearGradient(context);
+
+        context.fillStyle=mygradient;
+        context.fillRect(0,0,200,400);
+
+        context.restore();
+
+
+        var gradient=addRadialGradient(context);
+        context.arc(500,300,30,Math.PI*2,false);
+        context.fillStyle=gradient;
+        context.fill();
+    }
+
+    function addLinearGradient(context){
+        var mygradient=context.createLinearGradient(0,0,300,300);
+        mygradient.addColorStop(0,color[0]);
+        mygradient.addColorStop(0.5,color[1]);
+        mygradient.addColorStop(1,color[2]);
+        return mygradient;
+    }
+
+    function addRadialGradient(context){
+        var myRadialGradient=context.createRadialGradient(500,300,0,500,300,30);
+        myRadialGradient.addColorStop(0.3,color[0]);
+        myRadialGradient.addColorStop(0.7,color[1]);
+        myRadialGradient.addColorStop(0.9,color[2]);
+        return myRadialGradient;
+    }
+
+</script>
+</html>

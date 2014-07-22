@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        #canvas{
+            border:1px solid #F00;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="800" height="300"></canvas>
+</body>
+<script src="../common.js"></script>
+<script>
+var box={
+    width:100,
+    height:30,
+    background:"#0F0",
+    y:(height-30)/2,
+    x:(width-100)/2,
+    directX:1,
+    directY:1,
+    velocityX:10,
+    velocityY:5
+}
+
+function draw(){
+    context.clearRect(0,0,width,height);
+    context.beginPath();
+    context.fillStyle=box.background;
+    context.moveTo(box.x,box.y);
+    context.fillRect(box.x,box.y,box.width,box.height);
+    box.x+=box.velocityX*box.directX;
+    box.y+=box.velocityY*box.directY;
+    var id=requestAnimationFrame(draw);
+//    console.log(id);
+    if(box.x+box.width>width||box.x<0){
+        box.directX*=(-1);
+       // -webkitCancelRequestAnimationFrame(id);
+    }
+    if(box.y+box.height>height||box.y<0){
+        box.directY*=(-1);
+        // -webkitCancelRequestAnimationFrame(id);
+    }
+
+}
+
+    window.onload=function(){
+        draw();
+    }
+</script>
+</html>
