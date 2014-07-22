@@ -1,0 +1,33 @@
+<!doctype>
+<html>
+<charset="utf-8">
+<head>
+	<title></title>
+	<style type="text/css">
+	*{
+		padding: 0;
+		margin: 0;
+	}
+	</style>
+</head>
+<body>
+	<canvas id="canvas" width="400px" height="600px" style="border:1px solid #ACF;"></canvas>
+</body>
+<script type="text/javascript">
+var text=[1,2,3,4,5,6,7,8,9,10,11,12];
+var canvas=document.getElementById('canvas');
+var ctx=canvas.getContext("2d");
+ctx.font="28px Arial";
+ctx.beginPath(); // 开始路径绘制
+var length=text.length;
+var r=100,arc=Math.PI*2/length;
+text.forEach(function(text,index){
+    var textSize=ctx.measureText(text);
+    console.log(textSize);
+    ctx.strokeText(text,canvas.width/2+r*Math.cos(arc*(index-2))-textSize.width/2,canvas.height/2+r*Math.sin(arc*(index-2)));
+	ctx.stroke(); // 进行线的着色，这时整条线才变得可见
+});
+
+
+</script>
+</html>
