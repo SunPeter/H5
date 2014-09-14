@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        #canvas{
+            border:1px solid #F00;
+            background: #ACF;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="800" height="400">
+</canvas>
+</body>
+<script src="../common.js"></script>
+<script>
+    window.onload=function(){
+        context.save();
+
+        context.shadowOffsetX = 10;
+        context.shadowOffsetY = 10;
+        context.shadowBlur = 5;
+        context.shadowColor = "rgba(0,0,0,0.5)";
+
+        context.fillStyle = "#CC0000";
+        context.fillRect(10,10,150,100);
+
+        context.restore();
+
+        context.fillStyle = "#000000";
+        context.fillRect(180,10,150,100);
+
+        context.shadowOffsetX = 10;
+        context.shadowOffsetY = 10;
+        context.shadowBlur = 5;
+        context.shadowColor = "rgba(0,0,0,0.5)";
+        context.fillStyle="#CFF";
+        context.arc(120,250,100,0,Math.PI*2,false);
+        context.fill();
+        context.clip();
+        context.fillStyle="#FAB";
+        context.fillRect(100,150,250,300);
+        context.restore();
+    }
+</script>
+</html>

@@ -1,0 +1,43 @@
+<!doctype>
+<html>
+<charset="utf-8">
+<head>
+    <title></title>
+    <style type="text/css">
+        *{
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="400px" height="600px" style="border:1px solid #ACF;"></canvas>
+</body>
+<script type="text/javascript">
+    var canvas=document.getElementById('canvas');
+    var ctx=canvas.getContext("2d");
+    ctx.save();
+    ctx.fillStyle="#0F0";
+    ctx.fillRect(100,100,50,50);
+    ctx.restore();
+
+    ctx.transform(1,0,0,1,0,0);
+
+    ctx.save();
+    ctx.rotate(45*Math.PI/180);
+    ctx.fillStyle="#F00";
+    ctx.fillRect(100,100,50,50);
+    ctx.restore();
+
+    ctx.translate(25,25);
+    ctx.fillStyle="#00F";
+    ctx.fillRect(100,100,50,50);
+    ctx.restore();
+
+    ctx.translate(25,125);
+    ctx.scale(2,2);
+    ctx.fillStyle="#FF0";
+    ctx.fillRect(100,100,50,50);
+
+</script>
+</html>
