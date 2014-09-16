@@ -1,0 +1,31 @@
+<!doctype>
+<html>
+<charset="utf-8">
+<head>
+    <title></title>
+    <style type="text/css">
+        *{
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="400px" height="600px" style="border:1px solid #ACF;"></canvas>
+</body>
+<script type="text/javascript">
+    var canvas=document.getElementById('canvas');
+    var ctx=canvas.getContext("2d");
+    ctx.strokeStyle = "red";
+	ctx.lineWidth=5;
+	ctx.moveTo(0, 0);
+	ctx.lineTo(50, 0);
+	ctx.lineTo(50,50);
+	ctx.stroke();
+	var isPoint1InPath1=ctx.isPointInPath(0, 0);
+	var isPoint1InPath2=ctx.isPointInPath(10, 10);
+	console.log("isPoint1InPath1=" + isPoint1InPath1);
+	console.log("isPoint1InPath2=" + isPoint1InPath2);
+	ctx.closePath();
+</script>
+</html>
