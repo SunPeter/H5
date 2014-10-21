@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<h1>GainNode</h1>
+<h2>控制声音音量</h2>
+<input type="range" name="" id=""/>
+</body>
+<script>
+    // create web audio api context
+    var audioCtx = new (window.AudioContext || window.webkitAudioContext)(),
+        gainNode=audioCtx.createGain(),
+        oscillator = audioCtx.createOscillator();
+
+    window.onload=function(){
+        var range=document.querySelector("input[type='range']");
+        range.oninput=function(){
+            gainNode.gain.value=range.value;
+            oscillator.type = 'square';
+            oscillator.frequency.value = 441; // value in hertz
+            // connect oscillator to gain node to speakers
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+//            setTimeout(function(){
+//                oscillator.stop();
+//            },2000);
+        }
+        oscillator.start();
+    }
+
+</script>
+</html>

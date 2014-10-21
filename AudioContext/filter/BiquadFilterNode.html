@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<h1>biquadFilter</h1>
+<h2>控制声音音量</h2>
+<input type="range" name="" id="" max="1000"/>
+<input type="radio" name="type" value="lowpass"/>lowpass
+<input type="radio" name="type" value="highpass"/>highpass
+<input type="radio" name="type" value="bandpass"/>bandpass
+<input type="radio" name="type" value="lowshelf"/>lowshelf
+<input type="radio" name="type" value="highshelf"/>highshelf
+<input type="radio" name="type" value="peaking"/>peaking
+<input type="radio" name="type" value="notch"/>notch
+<input type="radio" name="type" value="allpass"/>allpass
+</body>
+<script>
+    // create web audio api context
+    var audioCtx = new (window.AudioContext || window.webkitAudioContext)(),
+        biquadFilter=audioCtx.createBiquadFilter(),
+        oscillator = audioCtx.createOscillator();
+
+    oscillator.type = 'square';
+    oscillator.frequency.value = 441; // value in hertz
+    oscillator.connect(biquadFilter);
+    biquadFilter.connect(audioCtx.destination);
+
+    window.onload=function(){
+        var range=document.querySelector("input[type='range']"),
+            radio=document.querySelectorAll("input[type='radio']");
+
+        range.oninput=function(){
+            biquadFilter.frequency.value =range.value;
+        }
+        for(var obj in radio){
+            radio[obj].onclick=function(){
+                biquadFilter.type=this.value;
+            }
+        }
+        oscillator.start();
+        biquadFilter.gain.value = 25;
+
+//        setTimeout(function(){
+//            oscillator.stop();
+//        },2000);
+    }
+
+</script>
+</html>

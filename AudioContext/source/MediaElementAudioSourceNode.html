@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<audio controls="">
+    <source src="http://www.html5rocks.com/en/tutorials/webaudio/games/sounds/m4a1.mp3" type="audio/ogg">
+    <p>Browser too old to support HTML5 audio? How depressing!</p>
+</audio>
+</body>
+<script>
+    window.onload=function(){
+        var audio=document.querySelector("audio");
+        // create web audio api context
+        var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        // Create a MediaElementAudioSourceNode
+        var source = audioCtx.createMediaElementSource(audio);
+        // Create a gain node
+        var gainNode = audioCtx.createGain();
+
+        source.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+    }
+</script>
+</html>

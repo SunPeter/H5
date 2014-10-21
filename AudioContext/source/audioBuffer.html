@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<h1>audioBuffer</h1>
+</body>
+<script>
+    // create web audio api context
+    var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    var sampleRate=audioCtx.sampleRate,
+        numberOfChannels= 2,
+        durantion= 2,
+        frameCount=sampleRate*durantion;
+
+    var buffer=audioCtx.createBuffer(numberOfChannels,frameCount,sampleRate);
+
+//    Float32Array;
+    for(var channel=0;channel<numberOfChannels;channel++){
+        var nowBuffering = buffer.getChannelData(channel);
+        for(var count=0;count<frameCount;count++){
+            nowBuffering[count]=Math.random()*2-1;
+        }
+    }
+
+    // Get an AudioBufferSourceNode.
+    // This is the AudioNode to use when we want to play an AudioBuffer
+    var source = audioCtx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(audioCtx.destination);
+    source.start();
+</script>
+</html>

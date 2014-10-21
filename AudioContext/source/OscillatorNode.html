@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<h1>震荡器Oscillator</h1>
+<input type="range" name="frequency" id="frequency"/>频率
+<input type="range" name="detune" id="detune"/>降调
+
+<input type="checkbox" name="mute" id="mute"/>mute
+</body>
+<script>
+    var type=["sine", "square", "sawtooth", "triangle"];
+    // create web audio api context
+    var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    //合音器
+    var gainNode = audioCtx.createGain();
+    console.log(audioCtx.sampleRate);
+    // create Oscillator node
+    var oscillator = audioCtx.createOscillator();
+    oscillator.type = 'square';
+    oscillator.frequency.value = 3000; // value in hertz
+    oscillator.detune.value = 100;
+    // connect oscillator to gain node to speakers
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    window.onload=function(){
+        var frequency=document.querySelector("#frequency");
+        frequency.onchange=function(ele){
+            oscillator.type=type[Math.floor(Math.random() * 4)];
+            oscillator.frequency.value =ele.target.value*30; // value in hertz
+        }
+
+        var detune=document.querySelector("#detune");
+        detune.onchange=function(ele){
+            oscillator.detune.value =ele.target.value; // value in hertz
+        }
+
+        var mute=document.querySelector("#mute");
+        mute.onchange=function(e){
+            if(e.target.checked){
+                gainNode.disconnect(audioCtx.destination);
+            }
+            else{
+                gainNode.connect(audioCtx.destination);
+            }
+        }
+    }
+    oscillator.start();
+</script>
+</html>
