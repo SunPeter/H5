@@ -9,26 +9,25 @@
             margin: 0;
         }
         #canvas{
-            border:1px solid #F00;
+            background: url("../tank/stone.png") repeat;
+            background-size: 50px 50px;
         }
     </style>
 </head>
 <body>
-<canvas id="canvas" width="800" height="300"></canvas>
+<canvas id="canvas" width="800" height="300">
+</canvas>
 </body>
-<script src="../common.js"></script>
+<script src="common.js"></script>
+<script src="util.js"></script>
 <script>
-
-    var ball=new Ball();
-
-    var angel= 0,A=100,vy=0.05,B=50;
-    (function drawFrame(){
+    var tank=new Tank();
+    tank.addEvent();
+    ;(function drawFrame(){
         requestAnimationFrame(drawFrame,canvas);
         context.clearRect(0,0,width,height);
-
-        ball.draw();
-        ball.y=height/2+B*Math.sin(angel);
-        angel+=vy;
+        tank.move();
+        tank.draw();
     })();
 </script>
 </html>
