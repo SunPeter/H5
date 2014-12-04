@@ -9,14 +9,16 @@
             margin: 0;
         }
         #canvas{
-            background: url("../tank/stone.png") repeat;
-            background-size: 50px 50px;
+            background: url("../tank/ground.png") repeat;
+            background-size: 50px;
         }
     </style>
 </head>
 <body>
-<canvas id="canvas" width="800" height="300">
-</canvas>
+<div id="stage">
+    <canvas id="canvas" width="300" height="300">
+    </canvas>
+</div>
 </body>
 <script src="common.js"></script>
 <script src="util.js"></script>
@@ -26,6 +28,9 @@
     ;(function drawFrame(){
         requestAnimationFrame(drawFrame,canvas);
         context.clearRect(0,0,width,height);
+
+        map.drawMap();
+
         tank.move();
         tank.draw();
     })();
