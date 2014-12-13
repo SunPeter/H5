@@ -9,7 +9,7 @@
             margin: 0;
         }
         #canvas{
-            background: url("../tank/ground.png") repeat;
+            background: url("tank/ground.png") repeat;
             background-size: 50px;
         }
     </style>
@@ -19,20 +19,6 @@
     <canvas id="canvas" width="300" height="300">
     </canvas>
 </div>
+<script src="lib/require.js" data-main="app.js"></script>
 </body>
-<script src="common.js"></script>
-<script src="util.js"></script>
-<script>
-    var tank=new Tank();
-    tank.addEvent();
-    ;(function drawFrame(){
-        requestAnimationFrame(drawFrame,canvas);
-        context.clearRect(0,0,width,height);
-
-        map.drawMap();
-
-        tank.move();
-        tank.draw();
-    })();
-</script>
 </html>

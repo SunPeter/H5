@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="stage">
+    <canvas id="canvas" width="300" height="300">
+    </canvas>
+</div>
+</body>
+<script src="../common.js"></script>
+<script>
+    window.onload=function(){
+        context.save();
+        context.translate(100,100);
+        context.rotate(45/180*Math.PI);
+        context.fillStyle="#000";
+
+        context.beginPath();
+        context.moveTo(0,0);
+
+        context.fillRect(0,0,100,100);
+        context.restore();
+
+        context.save();
+        context.moveTo(100,100);
+        context.lineTo(200,100);
+        context.stroke();
+        context.restore();
+
+    }
+</script>
+<script>
+</script>
+</html>
