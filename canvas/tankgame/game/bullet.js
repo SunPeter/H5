@@ -1,7 +1,7 @@
 /**
  * Created by peter on 14-12-13.
  */
-define("bullet",["common"],function(common){
+define("bullet",["common","map"],function(common,map){
     bulletConst=common.constVal.bullet;
     tankConst=common.constVal.tank;
     var context=common.context,
@@ -27,13 +27,13 @@ define("bullet",["common"],function(common){
             this.y=this.y-this.tankH/2-this.height/2;
         }
         if(this.direction=="down"){
-            this.y=this.y+this.tankH/2+this.height;
+            this.y=this.y+this.tankH/2+this.height/2;
         }
         if(this.direction=="left"){
-            this.x=this.x-this.tankW/2-this.width;
+            this.x=this.x-this.tankW/2-this.width/2;
         }
         if(this.direction=="right"){
-            this.x=this.x+this.tankW/2;
+            this.x=this.x+this.tankW/2+this.width/2;
         }
     }
     Bullet.prototype.draw=function(){
@@ -49,29 +49,39 @@ define("bullet",["common"],function(common){
         context.restore();
     }
     Bullet.prototype.move=function(){
-        if(this.x<=0||this.x+this.width>=winWidth||this.y<=0||this.y+this.height>=winHeight){
-            this.crash();
-            return;
-        }
+        var row=Math.floor(this.y/map.celly);
+        var column=Math.floor(this.x/map.cellx);
         if(this.direction=="up"){
             this.vx=0;
             this.vy=-10;
             this.rotateAngle=0;
+            if(row==-1||map.detail[row][column]>0){
+                this.crash();
+            }
         }
         if(this.direction=="down"){
             this.vx=0;
             this.vy=10;
             this.rotateAngle=180;
+            if(row==map.row||map.detail[row][column]>0){
+                this.crash();
+            }
         }
         if(this.direction=="left"){
             this.vx=-10;
             this.vy=0;
             this.rotateAngle=270;
+            if(column==-1||map.detail[row][column]>0){
+                this.crash();
+            }
         }
         if(this.direction=="right"){
             this.vx=10;
             this.vy=0;
             this.rotateAngle=90;
+            if(column==map.column||map.detail[row][column]>0){
+                this.crash();
+            }
         }
         this.x+=this.vx;
         this.y+=this.vy;
@@ -85,6 +95,7 @@ define("bullet",["common"],function(common){
         setTimeout(function(){
             _this.active=false;
         },100);
+        return;
     }
     Bullet.prototype.stop=function(){
         this.vx=this.vy=0;

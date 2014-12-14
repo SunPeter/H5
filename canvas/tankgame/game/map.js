@@ -22,29 +22,34 @@ define("map",["common"],function(common){
             context.drawImage(img,0,0,map.cellx,map.celly);
             context.restore();
         },
-        detail:[0,0,0,1,1,0,
-            0,0,2,0,0,0,
-            0,1,0,2,0,0,
-            0,0,3,0,1,0,
-            0,0,0,3,0,0,
-            0,0,0,0,0,0],
+        detail:[
+            [0,0,0,1,1,0],
+            [0,0,2,0,0,0],
+            [0,1,0,2,0,0],
+            [0,0,3,0,1,0],
+            [0,0,0,3,0,0],
+            [0,0,0,0,0,0]
+            ],
         drawMap:function(){
-            for(var i=0;i<map.detail.length;i++){
-                map.positionX=Math.floor(i%map.column)*map.cellx;
-                map.positionY=Math.floor(i/map.row)*map.celly;
-                if(map.detail[i]==0){
-                    map.imgSrc="";
+            for(var i=0;i<map.row;i++){
+                for(var j=0;j<map.column;j++){
+                    map.positionX=j*map.cellx;
+                    map.positionY=i*map.celly;
+                    switch (map.detail[i][j]){
+                        case 1:
+                            map.imgSrc="tank/stone.png";
+                            break;
+                        case 2:
+                            map.imgSrc="tank/star.png";
+                            break;
+                        case 3:
+                            map.imgSrc="tank/grass.png";
+                            break;
+                        default:
+                            map.imgSrc="";
+                    }
+                    map.printGround();
                 }
-                if(map.detail[i]==1){
-                    map.imgSrc="tank/stone.png";
-                }
-                if(map.detail[i]==2){
-                    map.imgSrc="tank/star.png";
-                }
-                if(map.detail[i]==3){
-                    map.imgSrc="tank/grass.png";
-                }
-                map.printGround();
             }
         }
     }

@@ -1,4 +1,4 @@
-define("tank",["common","bullet"],function(common,Bullet){
+define("tank",["common","bullet","map"],function(common,Bullet,map){
     var context=common.context,
         winWidth=common.winWidth,
         winHeight=common.winHeight;
@@ -75,12 +75,14 @@ define("tank",["common","bullet"],function(common,Bullet){
     }
 
     Tank.prototype.move=function(){
+        var row=Math.floor(this.y/tankConst.height);
+        var column=Math.floor(this.x/tankConst.width);
         if(this.go){
             if(this.direction=="up"){
                 this.vx=0;
                 this.vy=-this.vyStand;
                 this.rotateAngle=0;
-                if(this.y<=0){
+                if(row==0||map.detail[row-1][column]>0){
                     this.stop();
                 }
             }
@@ -88,7 +90,7 @@ define("tank",["common","bullet"],function(common,Bullet){
                 this.vx=0;
                 this.vy=this.vyStand;
                 this.rotateAngle=180;
-                if(this.y+this.height>=winHeight){
+                if(row==map.row-1||map.detail[row+1][column]>0){
                     this.stop();
                 }
             }
@@ -96,7 +98,7 @@ define("tank",["common","bullet"],function(common,Bullet){
                 this.vx=-this.vxStand;
                 this.vy=0;
                 this.rotateAngle=270;
-                if(this.x<=0){
+                if(column==0||map.detail[row][column-1]>0){
                     this.stop();
                 }
             }
@@ -104,7 +106,7 @@ define("tank",["common","bullet"],function(common,Bullet){
                 this.vx=this.vxStand;
                 this.vy=0;
                 this.rotateAngle=90;
-                if(this.x+this.width>=winWidth){
+                if(column==map.column-1||map.detail[row][column+1]>0){
                     this.stop();
                 }
             }
@@ -136,6 +138,7 @@ define("tank",["common","bullet"],function(common,Bullet){
         this.vx=this.vy=0;
         return;
     }
+
     Tank.prototype.addBullet=function(){
         if(this.fire){
             var bullet=new Bullet(this.x,this.y,this.direction);
