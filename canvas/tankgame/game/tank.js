@@ -4,28 +4,35 @@ define("tank",["common","bullet","map"],function(common,Bullet,map){
         winHeight=common.winHeight;
     bulletConst=common.constVal.bullet;
     tanlConst=common.constVal.tank;
-    var Tank=function(){
-        this.x=tankConst.width/2;
-        this.y=tankConst.height/2;
+    var Tank=function(isEnemy,x,y){
+        this.x=x?x:tankConst.width/2;
+        this.y=y?y:tankConst.height/2;
         this.direction="up";
         this.lastDirecton="up";
         this.bounce=-1;
         this.rotateAngle=0;
         this.fire=false;//是否开火
         this.go=false;//是否在运动
-        this.img="tank/tank1_small.png";
+        this.isEnemy=isEnemy;
         this.movelock=false;
         this.bullets=[];
         this.vxStand=tankConst.vxStand;
         this.vyStand=tankConst.vyStand;
         this.width=tankConst.width;
         this.height=tankConst.height;
+        this.audoDuration=1000;
+        this.lasAutoMoveTime=0;
     }
 
     Tank.prototype.draw=function(){
         var img=new Image();
+        if(!this.isEnemy){
+            this.img="tank/tank1_small.png";
+        }
+        else{
+            this.img="tank/tank2_small.png";
+        }
         img.src=this.img;
-
         context.save();
         context.translate(this.x,this.y);
         context.rotate(this.rotateAngle/180*Math.PI);
@@ -134,6 +141,13 @@ define("tank",["common","bullet","map"],function(common,Bullet,map){
         context.restore();
     }
 
+    Tank.prototype.autoMove=function(){
+        this.direction=["up","down","left","right"][Math.floor(Math.random()*4)];
+        this.movelock=true;
+        this.go=true;
+        this.move();
+        var $this=this;
+    }
     Tank.prototype.stop=function(){
         this.vx=this.vy=0;
         return;

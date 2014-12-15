@@ -8,7 +8,7 @@ define("map",["common"],function(common){
     var map={
         cellx:50,
         celly:50,
-        column:6,
+        column:10,
         row:6,
         positionX:0,
         positionY:0,
@@ -23,12 +23,12 @@ define("map",["common"],function(common){
             context.restore();
         },
         detail:[
-            [0,0,0,1,1,0],
-            [0,0,2,0,0,0],
-            [0,1,0,2,0,0],
-            [0,0,3,0,1,0],
-            [0,0,0,3,0,0],
-            [0,0,0,0,0,0]
+            [0,0,0,1,1,0,0,0,0,0],
+            [0,0,2,0,0,0,0,0,0,0],
+            [0,1,0,2,0,0,0,0,0,2],
+            [0,0,3,0,1,0,0,0,0,0],
+            [0,0,0,3,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0]
             ],
         drawMap:function(){
             for(var i=0;i<map.row;i++){

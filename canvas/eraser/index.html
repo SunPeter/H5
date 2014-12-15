@@ -1,0 +1,129 @@
+<!doctype>
+<html>
+<charset="utf-8">
+<head>
+    <title></title>
+    <style type="text/css">
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        #canvas{
+            background:url("bg1.jpg") no-repeat;
+            background-size: contain;
+            border:1px solid #F00;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<script type="text/javascript">
+    position={
+        x:0,
+        y:0
+    }
+    startPoint={
+        x:0,
+        y:0
+    }
+    radius=30;
+    isActive=false;
+    isMobile="ontouchstart" in window;
+    tapstart=isMobile?"touchstart":"mousedown";
+    tapmove=isMobile?"touchmove":"mousemove";
+    tapend=isMobile?"touchend":"mouseup";
+    document.addEventListener(tapstart,function(e){
+        startPoint.x=isMobile?e.targetTouches[0].pageX: e.clientX;
+        startPoint.y=isMobile? e.targetTouches[0].pageY: e.clientY;
+        isActive=true;
+        updatePosition(e);
+        start();
+    },false);
+    document.addEventListener(tapmove,function(e){
+        if(isActive){
+            updatePosition(e);
+            move();
+        }
+    },false);
+    document.addEventListener(tapend,function(e){
+        end();
+        isActive=false;
+        updatePosition(e);
+    },false);
+
+    window.onload=function(){
+        var img=new Image();
+        img.src='bg.jpg';
+        canvas=document.getElementById('canvas');
+        ctx=canvas.getContext("2d");
+        canvas.width=window.innerWidth;
+        canvas.height=window.innerHeight;
+        img.onload=function(){
+            ctx.drawImage(img,0,0,canvas.width,canvas.height);
+        }
+    }
+
+    function start(){
+        drawCircle();
+    }
+
+    function move(){
+        drawCircle();
+        dx=position.x-startPoint.x;
+        dy=position.y-startPoint.y;
+        if(dx&&dy){
+            angle=Math.atan(dy/dx);
+            var _x=radius*Math.sin(angle),
+                _y=radius*Math.cos(angle);
+            point1={
+                x:startPoint.x-_x,
+                y:startPoint.y+_y
+            }
+            point2={
+                x:startPoint.x+_x,
+                y:startPoint.y-_y
+            }
+            point3={
+                x:position.x-_x,
+                y:position.y+_y
+            }
+            point4={
+                x:position.x+_x,
+                y:position.y-_y
+            }
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(point1.x,point1.y);
+            ctx.lineTo(point2.x,point2.y);
+            ctx.lineTo(point4.x,point4.y);
+            ctx.lineTo(point3.x,point3.y);
+            ctx.closePath();
+            ctx.clip();
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            ctx.restore();
+            startPoint.x=position.x,
+            startPoint.y=position.y;
+        }
+    }
+
+    function end(){
+        drawCircle();
+    }
+
+    function updatePosition(e){
+        position.x=isMobile?e.targetTouches[0].pageX: e.clientX;
+        position.y=isMobile? e.targetTouches[0].pageY: e.clientY;
+    }
+
+
+    function drawCircle(){
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(position.x,position.y,radius,0,Math.PI*2,false);
+        ctx.clip();
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.restore();
+    }
+</script>
+</body>
+</html>

@@ -18,11 +18,10 @@
     var ctx=canvas.getContext("2d");
 
     ctx.fillStyle="#F00";
-    ctx.fillRect(0,0,100,50);
-
-    ctx.globalCompositeOperation="lighter";
-
+    ctx.arc(100,100,100,0,Math.PI*2,false);
+    ctx.fill();
+    ctx.globalCompositeOperation="destination-in";
     ctx.fillStyle="#0F0";
-    ctx.fillRect(50,0,50,100);
+    ctx.fillRect(150,50,100,100);
 </script>
 </html>
