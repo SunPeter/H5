@@ -33,16 +33,14 @@
     tapmove=isMobile?"touchmove":"mousemove";
     tapend=isMobile?"touchend":"mouseup";
     document.addEventListener(tapstart,function(e){
-        startPoint.x=isMobile?e.targetTouches[0].pageX: e.clientX;
-        startPoint.y=isMobile? e.targetTouches[0].pageY: e.clientY;
+        startPoint.x=position.x=isMobile?e.targetTouches[0].pageX: e.clientX;
+        startPoint.y=position.y=isMobile? e.targetTouches[0].pageY: e.clientY;
         isActive=true;
-        updatePosition(e);
         start();
     },false);
     document.addEventListener(tapmove,function(e){
         if(isActive){
-            updatePosition(e);
-            move();
+            move(e);
         }
     },false);
     document.addEventListener(tapend,function(e){
@@ -64,69 +62,37 @@
 
     function start(){
         drawCircle();
+        ctx.lineWidth=radius*2;
+        ctx.lineJoin="round";
+        ctx.lineCap="round";
     }
 
-    function move(){
+    function move(e){
         if(t!=undefined){
             clearTimeout(t);
         }
-        drawCircle();
-        dx=position.x-startPoint.x;
-        dy=position.y-startPoint.y;
-        if(dx&&dy){
-            angle=Math.atan(dy/dx);
-            var _x=radius*Math.sin(angle),
-                _y=radius*Math.cos(angle);
-            point1={
-                x:startPoint.x-_x,
-                y:startPoint.y+_y
-            }
-            point2={
-                x:startPoint.x+_x,
-                y:startPoint.y-_y
-            }
-            point3={
-                x:position.x-_x,
-                y:position.y+_y
-            }
-            point4={
-                x:position.x+_x,
-                y:position.y-_y
-            }
-            ctx.save();
-            ctx.beginPath();
-            ctx.moveTo(point1.x,point1.y);
-            ctx.lineTo(point2.x,point2.y);
-            ctx.lineTo(point4.x,point4.y);
-            ctx.lineTo(point3.x,point3.y);
-            ctx.closePath();
-            ctx.clip();
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            ctx.restore();
-            startPoint.x=position.x,
-            startPoint.y=position.y;
-            t=setTimeout(function(){
-                show();
-            },3000)
-        }
+        position.x=isMobile?e.targetTouches[0].pageX: e.clientX;
+        position.y=isMobile? e.targetTouches[0].pageY: e.clientY;
+        ctx.beginPath();
+        ctx.moveTo(startPoint.x,startPoint.y);
+        ctx.lineTo(position.x,position.y);
+        ctx.stroke();
+        startPoint.x=position.x,
+        startPoint.y=position.y;
+        t=setTimeout(function(){
+            show();
+        },3000)
     }
 
     function end(){
-        drawCircle();
     }
-
-    function updatePosition(e){
-        position.x=isMobile?e.targetTouches[0].pageX:e.clientX;
-        position.y=isMobile? e.targetTouches[0].pageY:e.clientY;
-    }
-
 
     function drawCircle(){
+        ctx.globalCompositeOperation = "destination-out";
         ctx.save();
         ctx.beginPath();
         ctx.arc(position.x,position.y,radius,0,Math.PI*2,false);
-        ctx.clip();
-        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.fill();
         ctx.restore();
     }
 
@@ -139,7 +105,7 @@
         var len1=w*h;
         for(var i=0;i<w*h;i++){
             if(imgData.data[i+3]==0){
-             d++;
+                d++;
             }
         }
         if(d/len1>0.5){
