@@ -9,4 +9,6 @@
     2.在move的过程中，为了保证线条的连贯，所以在矩形一端画圆   
     
 ##感谢   
-    [吖猩](http://2.axescanvas.sinaapp.com/demoHome/index.html) 以及[相关博文](http://www.cnblogs.com/axes/p/3850309.html#3057359)
+[吖猩](http://2.axescanvas.sinaapp.com/demoHome/index.html) 以及[相关博文](http://www.cnblogs.com/axes/p/3850309.html#3057359)]
+    
+ 
