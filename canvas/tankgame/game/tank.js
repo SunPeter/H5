@@ -142,24 +142,80 @@ define("tank",["common","bullet","map"],function(common,Bullet,map){
     }
 
     Tank.prototype.autoMove=function(){
-        this.direction=["up","down","left","right"][Math.floor(Math.random()*4)];
-        this.movelock=true;
-        this.go=true;
-        this.move();
-        var $this=this;
+        var row=Math.floor(this.y/tankConst.height);
+        var column=Math.floor(this.x/tankConst.width);
+        if(this.direction=="up"){
+            this.vx=0;
+            this.vy=-this.vyStand;
+            this.rotateAngle=0;
+            if(row==0||map.detail[row-1][column]>0){
+                this.stop();
+            }
+        }
+        if(this.direction=="down"){
+            this.vx=0;
+            this.vy=this.vyStand;
+            this.rotateAngle=180;
+            if(row==map.row-1||map.detail[row+1][column]>0){
+                this.stop();
+            }
+        }
+        if(this.direction=="left"){
+            this.vx=-this.vxStand;
+            this.vy=0;
+            this.rotateAngle=270;
+            if(column==0||map.detail[row][column-1]>0){
+                this.stop();
+            }
+        }
+        if(this.direction=="right"){
+            this.vx=this.vxStand;
+            this.vy=0;
+            this.rotateAngle=90;
+            if(column==map.column-1||map.detail[row][column+1]>0){
+                this.stop();
+            }
+        }
+        if(this.lastDirecton==this.direction){
+            this.x+=this.vx;
+            this.y+=this.vy;
+            this.addBullet();
+        }
+
+        var bullets=this.bullets;
+        if(bullets.length>0){
+            bullets.forEach(function(bullet){
+                if(bullet.active){
+                    bullet.move();
+                    bullet.draw();
+                }
+                else{
+                    var index=bullets.indexOf(bullet);
+                    bullets.splice(index);
+                }
+            });
+        }
+        context.restore();
     }
+
     Tank.prototype.stop=function(){
         this.vx=this.vy=0;
+        if(this.isEnemy){
+            var directions=["up","down","left","right"];
+            var index=directions.indexOf(this.direction);
+            directions.splice(index,1);
+            this.direction=directions[Math.floor(Math.random()*3)];
+            this.lastDirecton=this.direction;
+        }
         return;
     }
 
     Tank.prototype.addBullet=function(){
-        if(this.fire){
+        if(this.fire||this.isEnemy){
             var bullet=new Bullet(this.x,this.y,this.direction);
             bullet.init();
             this.bullets.unshift(bullet);
         }
-        window.bullets=this.bullets;
     }
 
     return Tank;

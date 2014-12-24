@@ -9,7 +9,7 @@ define("stage",["common","util","map","tank","bullet"],function(common,util,map,
     var tank1=new Tank(false);
     tank1.addEvent();
     var tank2=new Tank(true,25,125);
-    tank2.addEvent();
+
     ;(function drawFrame(){
         requestAnimationFrame(drawFrame,canvas);
         context.clearRect(0,0,winWidth,winHeight);
@@ -19,6 +19,8 @@ define("stage",["common","util","map","tank","bullet"],function(common,util,map,
         tank1.draw();
         tank1.move();
         tank2.draw();
-        tank2.autoMove();
+        util.moveOnCtl(function(){
+            tank2.autoMove();
+        },600);
     })();
 });

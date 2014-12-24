@@ -2,6 +2,7 @@
  * Created by peter on 14-12-3.
  */
 define("util",[],function(){
+    var lastTime=0;
     var util={
         "rectangleIntersects":function(ObjA,ObjB){
             return (ObjA.x+ObjA.width<ObjB.x||ObjB.x+ObjB.width<ObjA.x||ObjA.y+ObjA.height<ObjB.y||ObjB.y+ObjB.height<ObjA.y);
@@ -24,6 +25,17 @@ define("util",[],function(){
                 }
                 return color;
             }
+        },
+        "moveOnCtl":function(action,time){
+            var currentTime=new Date().getTime();
+            if(currentTime-lastTime>=time){
+                action();
+                lastTime=currentTime;
+            }
+            else{
+                return;
+            }
+
         }
     }
     return util;
