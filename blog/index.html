@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+    .ceil{
+        float: left;
+        width: 200px;
+        height: 200px;
+        box-shadow: 0 0 3px rgba(0,0,0,0.3);
+        margin:0 20px 20px 0;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="ceil">
+        <canvas id="canvas1" width="200" height="200"></canvas>
+        <p>已知圆心,一点,该点所在角度</p>
+    </div>
+    <div class="ceil">
+        <canvas id="canvas2" width="200" height="200"></canvas>
+        <p>已知圆心,半径,角速度</p>
+    </div>
+    <div class="ceil">
+        <canvas id="canvas3" width="200" height="200"></canvas>
+    </div>
+    <div class="ceil">
+        <canvas id="canvas4" width="200" height="200"></canvas>
+    </div>
+    <div class="ceil">
+        <canvas id="canvas5" width="200" height="200"></canvas>
+    </div>
+</body>
+<script src="vendor/sea.js"></script>
+<script>
+seajs.config({
+    base:"",
+    alias: {
+        'common': 'vendor/common.js'
+    }
+});
+seajs.use("3.js");
+</script>
+
+</html>
