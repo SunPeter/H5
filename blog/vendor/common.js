@@ -2,6 +2,13 @@ define("common", [], function(require, exports) {
     exports.Ball = function(x, y, r) {
         this.x = x;
         this.y = y;
+<<<<<<< HEAD
+=======
+        this.vx = 0;
+        this.vy = 0;
+        this.ax = 0;
+        this.ay = 0;
+>>>>>>> aa4152dacb9ab236b170a55ad428f0e00b45c22f
         this.radius = r;
         this.render = function(ctx) {
             ctx.save();
@@ -23,6 +30,7 @@ define("common", [], function(require, exports) {
         this.render = function(ctx){
             ctx.save();
             ctx.beginPath();
+            ctx.rotate(this.rotation);
             ctx.translate(this.x,this.y);
             ctx.moveTo(sx,sy);
             ctx.lineTo(dx,dy);
@@ -30,8 +38,8 @@ define("common", [], function(require, exports) {
             ctx.restore();
         }
         this.getBoundry = function(){
-            var cos = Math.cos(this.rotation/180*Math.PI),
-                sin = Math.sin(this.rotation/180*Math.PI);
+            var cos = Math.cos(this.rotation),
+                sin = Math.sin(this.rotation);
             var sx = this.sx*cos+this.sy*sin,
                 sy = this.sy*cos-this.sx*sin;
             var dx = this.dx*cos+this.dy*sin,
