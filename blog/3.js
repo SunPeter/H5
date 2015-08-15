@@ -7,6 +7,7 @@ seajs.use(["common"], function(common) {
     ctx = canvas.getContext("2d");
     var width = canvas.width;
     var height = canvas.height;
+    var bounce = -0.6;
     var angle = 20;
     var cos = Math.cos(angle/180*Math.PI),
         sin = Math.sin(angle/180*Math.PI);
@@ -21,15 +22,35 @@ seajs.use(["common"], function(common) {
     (function drawFrame() {
         requestAnimationFrame(drawFrame, canvas);
         ctx.clearRect(0, 0, width, height);
-        ball.render(ctx);
-        line.render(ctx);
+
         ball.vy += gravity;
         ball.y += ball.vy;
+        ball.x += ball.vx;
 
         var x1 = ball.x - line.x;
         var y1 = ball.y - line.y;
 
         var x2 = x1*cos + y1*sin;
         var y2 = y1*cos - x1*sin;
+
+        var vx2 = ball.vx*cos + ball.vy*sin;
+        var vy2 = ball.vy*cos - ball.vx*sin;
+
+        if(y2 + ball.radius > 0){
+            y2 = -ball.radius;
+            vy2 *= -bounce;
+        }
+
+        x1 = x2*cos - y2*sin;
+        y1 = y2*cos + x2*sin;
+
+        ball.vx = vx2*cos - vy2*sin;
+        ball.vy = vy2*cos + vx2*sin;
+
+        ball.x = line.x + x1;
+        ball.y = line.y + y1;
+
+        ball.render(ctx);
+        line.render(ctx);
     })();
 })
