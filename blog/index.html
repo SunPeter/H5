@@ -9,6 +9,9 @@
         padding: 0;
         margin: 0;
     }
+    body{
+        padding-left: 20px;
+    }
     .ceil{
         float: left;
         width: 200px;
@@ -29,13 +32,20 @@
         <p>已知圆心,半径,角速度</p>
     </div>
     <div class="ceil">
-        <canvas id="canvas3" width="200" height="200"></canvas>
+        <canvas id="canvas3" width="600" height="600"></canvas>
+        <p>坐标旋转</p>
     </div>
     <div class="ceil">
         <canvas id="canvas4" width="200" height="200"></canvas>
+        <p>动量守恒</p>
     </div>
     <div class="ceil">
         <canvas id="canvas5" width="200" height="200"></canvas>
+        <p>动量守恒简化版</p>
+    </div>
+    <div class="ceil">
+        <canvas id="canvas6" width="200" height="200"></canvas>
+        <p>二维动量守恒</p>
     </div>
 </body>
 <script src="vendor/sea.js"></script>
@@ -46,7 +56,7 @@ seajs.config({
         'common': 'vendor/common.js'
     }
 });
-seajs.use("3.js");
+seajs.use("6.js");
 </script>
 
 </html>
