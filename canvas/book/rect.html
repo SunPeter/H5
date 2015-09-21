@@ -1,0 +1,132 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,minimal-ui" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <meta name="apple-touch-fullscreen" content="no" />
+    <title></title>
+    <style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas" width="400px" height="400px"></canvas>
+
+    <script type="text/javascript">
+    if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = (webkitRequestAnimationFrame || mozRequestAnimationFrame || function(callback) {
+            return window.setTimeout(callback, 100 / 60);
+        })
+    }
+
+    var Ball = function(radius, color) {
+        this.x = 0;
+        this.y = 0;
+        this.radius = radius || 0;
+        this.color = "#" + (color * 0xFFFFFF).toString(16).substr(-6) || "#000";
+        this.vx = 0;
+        this.vy = 0;
+        this.mass = 1;
+        this.scaleX = 1;
+        this.scaleY = 1;
+    }
+    Ball.prototype.draw = function(context) {
+        context.save();
+        context.translate(this.x, this.y);
+        context.scale(this.scaleX, this.scaleY)
+        context.beginPath();
+        context.arc(0, 0, this.radius, 0, Math.PI * 2, true);
+        context.closePath();
+        context.fillStyle = this.color;
+        context.fill();
+        context.restore();
+    }
+
+    window.onload = function() {
+        var canvas = document.getElementById('canvas'),
+            context = canvas.getContext("2d"),
+            canvasWidth = canvas.width,
+            canvasHeight = canvas.height;
+
+        var ball1 = new Ball(60, Math.random()),
+            ball2 = new Ball(40, Math.random());
+        var balls = [ball1, ball2]
+        with(ball1) {
+            x = 100,
+                y = canvasHeight / 2 - 20,
+                mass = 5,
+                vx = 1
+        }
+        with(ball2) {
+            x = canvasWidth - 100,
+                y = canvasHeight / 2 - 20,
+                mass = 1,
+                vx = -1
+        }
+
+        function collision(ball1, ball2) {
+            var dx = ball1.x - ball2.x,
+                dy = ball1.y - ball2.y,
+                dr = ball1.radius + ball2.radius;
+            if (Math.sqrt(dx * dx + dy * dy) <= dr) {
+                //collision
+                ball1.vx = ((ball1.mass - ball2.mass) * ball1.vx + 2 * ball2.mass * ball2.vx) / (ball1.mass + ball2.mass)
+                ball2.vx = ((ball2.mass - ball1.mass) * ball2.vx + 2 * ball1.mass * ball1.vx) / (ball1.mass + ball2.mass)
+
+                // return true
+            } else {
+                // return false
+            }
+        }
+
+        function collision1(ball1, ball2) {
+            var dx = ball1.x - ball2.x,
+                dy = ball1.y - ball2.y,
+                dr = ball1.radius + ball2.radius,
+                ssd = ball1.vx - ball2.vx;
+            if (Math.sqrt(dx * dx + dy * dy) <= dr) {
+                //collision
+                ball1.vx = ((ball1.mass - ball2.mass) * ball1.vx + 2 * ball2.mass * ball2.vx) / (ball1.mass + ball2.mass)
+                ball2.vx = ball1.vx + ssd;
+
+                // return true
+            } else {
+                // return false
+            }
+        }
+
+        function move(ball) {
+            ball.x += ball.vx;
+            ball.y += ball.vy;
+            if (ball.x - ball.radius <= 0) {
+                ball.x = ball.radius,
+                    ball.vx *= -1
+            }
+            if (ball.x + ball.radius >= canvasWidth) {
+                ball.x = canvasWidth - ball.radius
+                ball.vx *= -1
+            }
+        }
+
+        (function draw() {
+            requestAnimationFrame(draw, canvas)
+            context.clearRect(0, 0, canvasWidth, canvasHeight);
+            collision(ball1, ball2)
+            balls.forEach(move);
+            ball1.draw(context)
+            ball2.draw(context)
+
+        })();
+    }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,148 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,minimal-ui" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <meta name="apple-touch-fullscreen" content="no" />
+    <title></title>
+    <style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas" width="400px" height="400px"></canvas>
+</body>
+<script>
+if (!window.requestAnimationFrame) {
+    window.requestAnimationFrame = (webkitRequestAnimationFrame || mozRequestAnimationFrame || function(callback) {
+        return window.setTimeout(callback, 100 / 60);
+    })
+}
+
+function Line(x1, y1, x2, y2) {
+    this.x = 0;
+    this.y = 0;
+    this.x1 = (x1 === undefined) ? 0 : x1;
+    this.y1 = (y1 === undefined) ? 0 : y1;
+    this.x2 = (x2 === undefined) ? 0 : x2;
+    this.y2 = (y2 === undefined) ? 0 : y2;
+    this.rotation = 0;
+    this.scaleX = 1;
+    this.scaleY = 1;
+    this.lineWidth = 1;
+}
+
+Line.prototype.draw = function(context) {
+    context.save();
+    context.translate(this.x, this.y);
+    context.rotate(this.rotation);
+    context.scale(this.scaleX, this.scaleY);
+
+    context.lineWidth = this.lineWidth;
+    context.beginPath();
+    context.moveTo(this.x1, this.y1);
+    context.lineTo(this.x2, this.y2);
+    context.closePath();
+    context.stroke();
+    context.restore();
+};
+
+var Ball = function(radius, color) {
+    this.x = 0;
+    this.y = 0;
+    this.radius = radius || 0;
+    this.color = "#" + (color * 0xFFFFFF).toString(16).substr(-6) || "#000";
+    this.vx = 0;
+    this.vy = 0;
+    this.scaleX = 1;
+    this.scaleY = 1;
+}
+Ball.prototype.draw = function(context) {
+    context.save();
+    context.translate(this.x, this.y);
+    context.scale(this.scaleX, this.scaleY)
+    context.beginPath();
+    context.arc(0, 0, this.radius, 0, Math.PI * 2, true);
+    context.closePath();
+    context.fillStyle = this.color;
+    context.fill();
+    context.restore();
+}
+
+window.onload = function() {
+    var canvas = document.getElementById('canvas'),
+        context = canvas.getContext("2d"),
+        canvasWidth = canvas.width,
+        canvasHeight = canvas.height;
+
+    var line = new Line(0, 0, 400, 0),
+        gravity = 1;
+    line.rotation = 10 * Math.PI / 180; //10 degrees to radians
+    line.x = 100, line.y = 300;
+
+    var ball = new Ball(30, Math.random());
+
+    ball.x = 150, ball.y = 100;
+
+
+
+    var sin = Math.sin(line.rotation),
+        cos = Math.cos(line.rotation);
+
+
+    (function draw() {
+        requestAnimationFrame(draw, canvas)
+        context.clearRect(0, 0, canvasWidth, canvasHeight);
+
+
+        ball.vy += gravity;
+        ball.x += ball.vx, ball.y += ball.vy;
+
+        var x0 = ball.x - line.x,
+            y0 = ball.y - line.y;
+
+        // 旋转坐标系
+        var y1 = y0 * cos - x0 * sin;
+
+
+
+
+        if (y1 + ball.radius > 0) {
+            var x1 = x0 * cos + y0 * sin;
+            var vx1 = ball.vx * cos + ball.vy * sin,
+                vy1 = ball.vy * cos - ball.vx * sin;
+
+            y1 = -ball.radius;
+            vy1 *= -0.6
+
+
+
+            // 恢复坐标系
+            ball.x = line.x + x1 * cos - y1 * sin,
+                ball.y = line.y + y1 * cos + x1 * sin
+
+            ball.vx = vx1 * cos - vy1 * sin,
+                ball.vy = vy1 * cos + vx1 * sin
+        }
+
+
+
+
+
+        ball.draw(context)
+        line.draw(context)
+
+
+    })();
+}
+</script>
+
+</html>
