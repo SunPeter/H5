@@ -1,4 +1,4 @@
-seajs.use(["common"], function(common) {
+seajs.use(["common","engin"], function(common,engin) {
     var Ball = common.Ball;
 
     canvas = document.getElementById('canvas7');
@@ -61,7 +61,7 @@ seajs.use(["common"], function(common) {
         var ball1 = ball;
         for (var j = i + 1; j < balls.length; j++) {
             var ball2 = balls[j];
-            ball.collision(ball1,ball2);
+            engin.bounce(ball1,ball2);
         }
     }
 })
