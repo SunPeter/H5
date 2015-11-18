@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        #canvas{
+            border:1px solid #F00;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="800" height="300"></canvas>
+</body>
+<script src="../common.js"></script>
+<script>
+    var ax=0.1,vx=1;
+    window.addEventListener("keydown",function(e){
+        if(e.keyCode==37){
+            ax=-0.1;
+        }
+        if(e.keyCode==39){
+            ax=0.1;
+        }
+    });
+    var ball=new Ball();
+
+    (function drawFrame(){
+        requestAnimationFrame(drawFrame,canvas);
+        context.clearRect(0,0,width,height);
+        ball.x+=vx;
+        ball.draw();
+        vx+=ax;
+    })();
+</script>
+</html>

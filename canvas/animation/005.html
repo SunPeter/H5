@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        #canvas{
+            border:1px solid #F00;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="800" height="300"></canvas>
+</body>
+<script src="../common.js"></script>
+<script>
+    var point={
+        x:0,
+        y:0
+    }
+
+    document.querySelector("canvas").addEventListener("click",function(e){
+        var dest={
+            x: e.offsetX,
+            y: e.offsetY
+        }
+        drawLine(point,dest);
+    },false);
+
+
+    function drawLine(startP,endP){
+        context.beginPath();
+        context.moveTo(startP.x,startP.y);
+        context.quadraticCurveTo(endP.x,endP.y,width,height);
+        context.stroke();
+    }
+</script>
+</html>

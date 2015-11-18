@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        #canvas{
+            border:1px solid #F00;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="800" height="300"></canvas>
+</body>
+<script src="../common.js"></script>
+<script>
+    var line={
+        posX:width/2,
+        posY:height/2,
+        angle:0,
+        vx:0.1,
+        vy:1,
+        ang:0.01
+    };
+    (function drawFrame(){
+        requestAnimationFrame(drawFrame,canvas);
+        line.posX+=line.vx;
+        line.posY=height/2+Math.sin(line.angle)*50;
+        line.angle+=line.ang;
+        context.lineTo(line.posX,line.posY);
+        context.stroke();
+    })();
+</script>
+</html>

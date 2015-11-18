@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        #canvas{
+            border:1px solid #F00;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="800" height="300"></canvas>
+</body>
+<script src="../common.js"></script>
+<script>
+
+    var ball1=new Ball();
+    var ball2=new Ball();
+    var ball3=new Ball();
+    var spring=0.03,friction=0.9,gravity=2;
+    var point={
+        "x":0,
+        "y":0
+    }
+    window.addEventListener("click",function(e){
+        point.x= e.pageX,
+        point.y= e.pageY;
+    },false);
+    window.addEventListener("touchstart",function(e){
+        var touch_event= e.touches[0];
+//        alert(touch_event.pageX+":"+touch_event.pageY);
+        point.x=touch_event.pageX,
+        point.y=touch_event.pageY;
+    },false);
+    (function drawFrame(){
+        requestAnimationFrame(drawFrame,canvas);
+        context.clearRect(0,0,width,height);
+
+        moveTo(ball1,point);
+        moveTo(ball2,ball1);
+        moveTo(ball3,ball2);
+
+        context.beginPath();
+        context.moveTo(point.x, point.y);
+        context.lineTo(ball1.x, ball1.y);
+        context.lineTo(ball2.x, ball2.y);
+        context.lineTo(ball3.x, ball3.y);
+        context.stroke();
+
+        ball1.draw();
+        ball2.draw();
+        ball3.draw();
+    })();
+
+    function moveTo(ball,point){
+        var dx=point.x-ball.x;
+        var dy=point.y-ball.y;
+        ball.ax=dx*spring;
+        ball.ay=dy*spring;
+        ball.vx+=ball.ax;
+        ball.vy+=ball.ay;
+        ball.vy+=gravity;
+
+        ball.vx*=friction;
+        ball.vy*=friction;
+        ball.x+=ball.vx;
+        ball.y+=ball.vy;
+    }
+</script>
+</html>

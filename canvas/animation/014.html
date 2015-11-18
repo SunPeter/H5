@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        #canvas{
+            border:1px solid #F00;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="800" height="300"></canvas>
+</body>
+<script src="../common.js"></script>
+<script>
+
+    var ball=new Ball();
+    target={
+        "x":width/2,
+        "y":height/2
+    }
+    ball.x=0,k=0.01,vx=0,vy=0,gravity=1;
+    (function drawFrame(){
+        var animRequest=requestAnimationFrame(drawFrame,canvas);
+        context.clearRect(0,0,width,height);
+        var dx=target.x-ball.x;
+        var ax=dx*k;
+        vx+=ax;
+        vx*=0.99;
+        ball.x+=vx;
+
+        var dy=target.y-ball.y;
+        var ay=dy*k;
+        vy+=ay;
+        vy+=gravity;
+        vy*=0.95;
+        ball.y+=vy;
+
+        ball.draw();
+
+        context.beginPath();
+        context.moveTo(ball.x,ball.y);
+        context.lineTo(target.x,target.y);
+        context.stroke();
+        if(Math.sqrt(Math.pow(target.x-ball.x,2)+Math.pow(target.y-ball.y,2))<=0.1){
+            cancelRequestAnimationFrame(animRequest);
+        }
+    })();
+
+    window.addEventListener("click",function(e){
+        target.x= e.pageX;
+        target.y= e.pageY;
+    });
+</script>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        #canvas{
+            border:1px solid #F00;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="800" height="600"></canvas>
+</body>
+<script src="../common.js"></script>
+<script src="util.js"></script>
+<script>
+    var num=20;
+    var balls=[];
+    var spring = 0.5;
+
+    for(var i=0;i<num;i++){
+        var ball=new Ball(Math.floor(Math.random()*50));
+        ball.x=Math.random()*width;
+        ball.y=Math.random()*height;
+        ball.vx=Math.random()*6;
+        ball.vy=Math.random()*6;
+        ball.fillStyle=util.parseColor(Math.random() * 0xffffff);
+        balls.push(ball);
+    }
+
+    function checkCollision(ObjA,i){
+        for(var j=i+1;j<num;j++){
+            var ObjB=balls[j];
+            if(!util.ballIntersects(ObjA,ObjB)){
+                dx = ObjB.x - ObjA.x;
+                dy = ObjB.y - ObjA.y;
+                dist = Math.sqrt(dx * dx + dy * dy);
+                min_dist = ObjA.radius + ObjB.radius;
+                var tx = ObjA.x + dx / dist * min_dist,
+                ty = ObjA.y + dy / dist * min_dist;
+                ObjA.vx -= (tx - ObjB.x) * spring;
+                ObjA.vy -= (ty - ObjB.y) * spring;
+                ObjB.vx += (tx - ObjB.x) * spring;
+                ObjB.vy += (ty - ObjB.y) * spring;
+            }
+        }
+    }
+    ;(function drawFrame(){
+        requestAnimationFrame(drawFrame,canvas);
+        context.clearRect(0,0,width,height);
+
+        balls.forEach(function(ball,index){
+            ball.move();
+            ball.draw();
+            checkCollision(ball,index);
+        });
+    })();
+</script>
+</html>

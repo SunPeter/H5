@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        #canvas{
+            background: #000;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="800" height="800"></canvas>
+<input type="range" name="" id="speed" max="10" value="0"/>
+</body>
+<script src="../common.js"></script>
+<script>
+    var ball=new Ball(40);
+    var center={
+        "x":width/2,
+        "y":height/2
+    }
+    ball.x=width/2-ball.radius/2;
+    ball.y=height/2-ball.radius/2;
+
+    angle=0.05;
+    var cos=Math.cos(angle),
+        sin=Math.sin(angle);
+    (function drawFrame(){
+        requestAnimationFrame(drawFrame,canvas);
+        context.clearRect(0,0,width,height);
+        var x=ball.x-center.x;
+        var y=ball.y-center.y;
+        ball.x=center.x+x*cos-y*sin;
+        ball.y=center.y+y*cos+x*sin;
+        ball.draw();
+    })();
+
+
+    document.querySelector("#speed").onchange=function(){
+        angle=this.value/100;
+        cos=Math.cos(angle),
+        sin=Math.sin(angle);
+    }
+</script>
+</html>

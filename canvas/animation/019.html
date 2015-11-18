@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        #canvas{
+            border:1px solid #F00;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="800" height="600">
+</canvas>
+</body>
+<script src="../common.js"></script>
+<script src="util.js"></script>
+<script>
+    var ball1=new Ball(20);
+    with (ball1){
+        x=ball1.radius*3,
+        y=height/2-radius/2,
+        vx=10,
+        mass=2;
+    }
+    var ball2=new Ball(20);
+    with (ball2){
+        x=width-ball2.radius*3,
+        y=height/2-radius/2,
+        vx=-10,
+        mass=10;
+    }
+
+    ;(function drawFrame(){
+        requestAnimationFrame(drawFrame,canvas);
+        context.clearRect(0,0,width,height);
+        ball1.move();
+        ball2.move();
+        ball1.draw();
+        ball2.draw();
+        checkCollision(ball1,ball2);
+    })();
+
+
+    function checkCollision(ball1,ball2){
+        if(!util.ballIntersects(ball1,ball2)){
+            var v=(ball1.mass*ball1.vx+ball2.mass*ball2.vx)/(ball1.mass+ball2.mass);
+
+//            动量守恒
+//            ball1.vx=ball2.vx=v;
+
+//            动能守恒
+            var vx0Final = ((ball1.mass - ball2.mass) * ball1.vx + 2 * ball2.mass * ball2.vx) / (ball1.mass + ball2.mass),
+            vx1Final = ((ball2.mass - ball1.mass) * ball2.vx + 2 * ball1.mass * ball1.vx) / (ball1.mass + ball2.mass);
+            ball1.vx = vx0Final;
+            ball2.vx = vx1Final;
+        }
+    }
+</script>
+</html>

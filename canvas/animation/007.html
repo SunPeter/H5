@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        #canvas{
+            border:1px solid #F00;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="800" height="300"></canvas>
+</body>
+<script src="../common.js"></script>
+<script>
+    var points=[];
+    for(var i=0;i<5;i++){
+        var point={
+            "x":width*Math.random(),
+            "y":height*Math.random()
+        }
+        points.push(point);
+    }
+
+    for(var item in points){
+        context.save();
+        context.beginPath();
+        context.arc(points[item].x,points[item].y,10,0,Math.PI*2,true);
+        context.stroke();
+        context.restore();
+    }
+
+    context.save();
+    context.beginPath();
+    context.moveTo(points[0].x,points[0].y);
+    for(var i=1;i<points.length-2;i++){
+        var ctrolPoint={
+            "x":(points[i].x+points[i+1].x)/2,
+            "y":(points[i].y+points[i+1].y)/2
+        };
+        context.quadraticCurveTo(points[i].x,points[i].y,ctrolPoint.x,ctrolPoint.y);
+        context.stroke();
+        context.restore();
+    }
+    context.save();
+    context.beginPath();
+    context.quadraticCurveTo(points[i].x,points[i].y,points[i+1].x,points[i+1].y);
+    context.stroke();
+    context.restore();
+
+</script>
+</html>

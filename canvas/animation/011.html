@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        #canvas{
+            border:1px solid #F00;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="800" height="300"></canvas>
+</body>
+<script src="../common.js"></script>
+<script>
+
+    var ball=new Ball();
+
+    var target={
+        "x":width,
+        "y":height
+    }
+    var ease=0.05;
+    ball.x=ball.y=0;
+    (function drawFrame(){
+        requestAnimationFrame(drawFrame,canvas);
+        context.clearRect(0,0,width,height);
+
+        var dx=target.x-ball.x,
+            dy=target.y-ball.y;
+        var vx=dx*ease,
+            vy=dy*ease;
+
+        ball.x+=vx,
+        ball.y+=vy;
+        ball.draw();
+    })();
+
+    window.addEventListener("click",function(e){
+        target.x= e.pageX,
+        target.y= e.pageY;
+    })
+</script>
+</html>

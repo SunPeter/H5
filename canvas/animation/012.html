@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        #canvas{
+            background: #000;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="800" height="300"></canvas>
+</body>
+<script src="../common.js"></script>
+<script>
+
+    var ship=new Ship();
+    var targetRotate=270;
+    var ease=0.1;
+    (function drawFrame(){
+        requestAnimationFrame(drawFrame,canvas);
+        context.clearRect(0,0,width,height);
+
+        var rotateAngle=(targetRotate-ship.rotateAngle)*ease;
+        ship.rotateAngle+=rotateAngle;
+        ship.draw();
+    })();
+
+</script>
+</html>

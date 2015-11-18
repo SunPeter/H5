@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        #canvas{
+            background: #000;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="800" height="300"></canvas>
+</body>
+<script src="../common.js"></script>
+<script>
+
+    var ship=new Ship();
+
+    window.addEventListener("keydown",function(e){
+        switch (e.keyCode){
+            case 37:
+                ship.vx=-1;
+                break;
+            case 39:
+                ship.speedUp=true;
+                ship.vx=1;
+                break;
+            case 38:
+                ship.vy=-1;
+                break;
+            case 40:
+                ship.vy=1;
+                break;
+        }
+    });
+
+    window.addEventListener("keyup",function(e){
+        switch (e.keyCode){
+            case 37:
+                ship.vx=0;
+                break;
+            case 39:
+                ship.speedUp=false;
+                ship.vx=0;
+                break;
+            case 38:
+                ship.vy=0;
+                break;
+            case 40:
+                ship.vy=0;
+                break;
+        }
+    });
+
+    (function drawFrame(){
+        requestAnimationFrame(drawFrame,canvas);
+        context.clearRect(0,0,width,height);
+        ship.x+=ship.vx;
+        ship.y+=ship.vy;
+        ship.draw();
+
+    })();
+</script>
+</html>
